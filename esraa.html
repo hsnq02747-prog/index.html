@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتائج الامتحانات العامة - السادس العلمي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff6b8b;
+            --soft-pink: #ffe6ea;
+            --dark-pink: #d81b60;
+            --text-color: #4a4a4a;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(216, 27, 96, 0.2);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            border: 2px solid #ffb6c1;
+        }
+
+        h2 {
+            color: var(--dark-pink);
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        p.subtitle {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--dark-pink);
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffccd5;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        input:focus {
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 8px rgba(255, 107, 139, 0.4);
+        }
+
+        .btn-submit {
+            background: linear-gradient(45deg, #ff6b8b, #d81b60);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(216, 27, 96, 0.3);
+        }
+
+        .error-msg {
+            color: #e53935;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            font-size: 14px;
+            border: 1px solid #ffcdd2;
+        }
+
+        #results-card {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .student-info {
+            background-color: var(--soft-pink);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: right;
+            border-right: 5px solid var(--primary-pink);
+        }
+
+        .student-info p {
+            margin: 5px 0;
+            font-size: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #ffe6ea;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: var(--primary-pink);
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #fff0f3;
+        }
+
+        .love-grade {
+            color: var(--dark-pink);
+            font-weight: bold;
+        }
+
+        .final-message {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #fff0f3;
+            border-radius: 12px;
+            color: var(--dark-pink);
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px dashed var(--primary-pink);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- نموذج إدخال البيانات -->
+    <div id="login-card">
+        <h2>🌸 وزارة التربية والتعليم 🌸</h2>
+        <p class="subtitle">بوابة الاستعلام عن نتائج السادس العلمي</p>
+        
+        <form id="searchForm" onsubmit="checkResults(event)">
+            <div class="form-group">
+                <label for="examNo">الرقم الامتحاني:</label>
+                <input type="text" id="examNo" placeholder="أدخلي الرقم الامتحاني" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="secretKey">الرمز السري:</label>
+                <input type="password" id="secretKey" placeholder="أدخلي الرمز السري" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mathCheck" id="mathLabel">اختبار الأمان:</label>
+                <input type="number" id="mathCheck" placeholder="أدخلي الناتج" required>
+            </div>
+
+            <button type="submit" class="btn-submit">عرض النتيجة ✨</button>
+        </form>
+
+        <div id="errorMsg" class="error-msg">⚠️ البيانات المدخلة غير صحيحة، يرجى التأكد وإعادة المحاولة.</div>
+    </div>
+
+    <!-- بطاقة عرض النتائج -->
+    <div id="results-card">
+        <h2>🎉 نتيجة السادس العلمي 🎉</h2>
+        <p class="subtitle">ألف مبروك التخرج والتفوق</p>
+
+        <div class="student-info">
+            <p><strong>اسم الطالبة:</strong> إسراء 💕</p>
+            <p><strong>المحافظة:</strong> المثنى (السماوة) 🌸</p>
+            <p><strong>الفرع:</strong> العلمي</p>
+            <p><strong>النتيجة العامة:</strong> الأولى على قلبي بامتياز 👑</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>المادة</th>
+                    <th>الدرجة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>التربية الإسلامية</td>
+                    <td class="love-grade">حفظكِ الله لقلبي من كل شر ✨</td>
+                </tr>
+                <tr>
+                    <td>اللغة العربية</td>
+                    <td class="love-grade">كل قصائد الغزل كُتبت لعينيكِ 📜💖</td>
+                </tr>
+                <tr>
+                    <td>اللغة الإنكليزية</td>
+                    <td class="love-grade">You are my whole world 🌎💗</td>
+                </tr>
+                <tr>
+                    <td>الأحياء</td>
+                    <td class="love-grade">أنتِ النبض والوتين لقلبي 🫀✨</td>
+                </tr>
+                <tr>
+                    <td>الرياضيات</td>
+                    <td class="love-grade">معادلة حبكِ ليس لها نهاية ♾️❤️</td>
+                </tr>
+                <tr>
+                    <td>الكيمياء</td>
+                    <td class="love-grade">التفاعل الوحيد السريع هو خفقان قلبي لكِ 🧪💘</td>
+                </tr>
+                <tr>
+                    <td>الفيزياء</td>
+                    <td class="love-grade">أنتِ الجاذبية التي تسحبني إليكِ دائماً 🧲💓</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="final-message">
+            المعدل: 100% في الجمال واللطافة 🌸<br>
+            كل عام وأنتِ ألطف وأجمل وردة في السماوة كلها! 💖
+        </div>
+    </div>
+</div>
+
+<script>
+    // قائمة بـ 5 عمليات حسابية بسيطة مع أسلئتها وأجوبتها
+    const mathQuestions = [
+        { question: "اختبار الأمان: كم حاصل 5 + 3 ؟", answer: 8 },
+        { question: "اختبار الأمان: كم حاصل 10 - 4 ؟", answer: 6 },
+        { question: "اختبار الأمان: كم حاصل 2 × 4 ؟", answer: 8 },
+        { question: "اختبار الأمان: كم حاصل 7 + 5 ؟", answer: 12 },
+        { question: "اختبار الأمان: كم حاصل 9 - 3 ؟", answer: 6 }
+    ];
+
+    // اختيار عملية عشوائية من القائمة عند فتح الصفحة
+    const selectedMath = mathQuestions[Math.floor(Math.random() * mathQuestions.length)];
+
+    // تعيين نص السؤال في الصفحة
+    document.getElementById('mathLabel').innerText = selectedMath.question;
+
+    function checkResults(event) {
+        event.preventDefault();
+
+        // البيانات الخاصة بك
+        const correctExamNo = "292612520130011";
+        const correctSecretKey = "26243057578028";
+
+        const examNo = document.getElementById('examNo').value.trim();
+        const secretKey = document.getElementById('secretKey').value.trim();
+        const mathCheck = parseInt(document.getElementById('mathCheck').value.trim());
+        const errorMsg = document.getElementById('errorMsg');
+
+        // التحقق من صحة الرقم والرمز والعملية الحسابية المحددة في تلك المرة
+        if (examNo === correctExamNo && secretKey === correctSecretKey && mathCheck === selectedMath.answer) {
+            document.getElementById('login-card').style.display = 'none';
+            document.getElementById('results-card').style.display = 'block';
+        } else {
+            errorMsg.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>
